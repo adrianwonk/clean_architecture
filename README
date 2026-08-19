@@ -1,0 +1,14 @@
+# Project dependencies:
+- CMake for building libraries.
+- ncurses
+- C++20
+- Ninja
+
+# To make build files:
+- cmake -B build -G Ninja
+
+# To make main executable:
+- cmake --build build
+
+# To run program:
+- ./build/main
