@@ -1,6 +1,10 @@
 #include <iostream>
 #include "INCurses.hpp"
+
 #include "NCurses_v1.hpp"
+#include "NewLineLog.hpp"
+#include "ColorfulLog.hpp"
+
 /* 
  * i would like to add a ncurses dependency.
  *  main -> ncurses
@@ -12,7 +16,6 @@
      * However, we still need to define implementation of INCurses.
      * Create in stack, keep constructor simple, and pass it into interface reference instantly.
  * */ 
-
 
 /*
  * Responsibilities:
@@ -26,7 +29,9 @@ using namespace std;
 void init() {
     std::cout<<"hello init"<< '\n';
 
-    NCurses_v1 ncur_setup{}  ;
+    ColorfulLog logger {};
+    logger.print_8_colours();
+    NCurses_v1 ncur_setup{ logger }  ;
     INCurses& p = ncur_setup ;
     p.init()                 ;
 }

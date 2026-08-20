@@ -17,7 +17,8 @@ set(CMAKE_CXX_COMPILER "clang++")
 find_package(Curses REQUIRED)
 
 # 4. Declare executable build target
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME})
+add_subdirectory(src)
 
 # 5. Link ncurses libraries and include header search paths
 target_link_libraries(${PROJECT_NAME} PRIVATE ${CURSES_LIBRARIES})
