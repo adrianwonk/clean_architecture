@@ -25,6 +25,14 @@
      *  - painting each paintable object
  */
 
+/* I would also like to add a logger to each component. setup would be a component, live ncurses calls would be a component, game engine would be a component.
+ * 1. Logger
+ * 2. setup
+ * 3. NCurses_caller
+ * 4. Game_engine
+ * 5. main compositor (this)
+ * */
+
 using namespace std;
 void init() {
     std::cout<<"hello init"<< '\n';

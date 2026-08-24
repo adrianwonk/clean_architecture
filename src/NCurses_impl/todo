@@ -1,0 +1,6 @@
+write an ncurses engine.
+
+1. write curses_init()
+2. write curses_init_color()
+3. write string_builder model
+4. write color_enum model
