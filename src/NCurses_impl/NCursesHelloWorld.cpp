@@ -1,7 +1,8 @@
-#include "NCursesBaseInitialiser.hpp"
+#include "NCursesHelloWorld.hpp"
 #include "vec3.hpp"
 
 #include <ncurses.h>
+#include <format>
 
 namespace{
 point3 top_left {}; // MISSION CRITICAL
@@ -18,18 +19,17 @@ void init_top_left(){
 
 }
 
-NCursesBaseInitialiser::NCursesBaseInitialiser(ILog& log_obj)
+NCursesHelloWorld::NCursesHelloWorld(ILog& log_obj)
     : logger(log_obj)
 {
-    logger.log("hello NCursesBaseInitialiser constructor");
+    logger.log("hello NCursesHelloWorld constructor");
 }
 
 
 
-void NCursesBaseInitialiser::init()
-{
-    logger.log("hello NCursesBaseInitialiser init");
-
+void NCursesHelloWorld::init() {
+    logger.log("hello NCursesHelloWorld init");
+    setlocale(LC_ALL, "C.UTF-8");
     if (initscr() == nullptr) {
         logger.log("failed to initialise ncurses");
         return;
@@ -43,4 +43,12 @@ void NCursesBaseInitialiser::init()
     if (has_colors()) {
         start_color();
     }
+}
+
+void NCursesHelloWorld::cleanup(){
+    endwin();
+}
+
+void NCursesHelloWorld::draw(int x, int y, std::string_view str){
+    logger.log(std::format("pos: ({}, {}), str: {}", x, y, str));
 }

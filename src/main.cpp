@@ -1,8 +1,8 @@
 #include <iostream>
-#include "INCurses.hpp"
+#include <ncurses.h>
+#include "INCursesResxManager.hpp"
+#include "NCursesHelloWorld.hpp"
 
-#include "NCurses_v1.hpp"
-#include "NewLineLog.hpp"
 #include "ColorfulLog.hpp"
 
 /* 
@@ -34,19 +34,21 @@
  * */
 
 using namespace std;
-void init() {
-    std::cout<<"hello init"<< '\n';
+namespace{
+    ColorfulLog colorful {std::cout};
+    ILog& logger { colorful };
+    NCursesHelloWorld hi{ logger };
 
-    ColorfulLog logger {};
-    logger.print_8_colours();
-    NCurses_v1 ncur_setup{ logger }  ;
-    INCurses& p = ncur_setup ;
-    p.init()                 ;
+    INCursesResxManager& p = hi;
+    IDraw2D& draw = hi;
 }
 
 int main(){
-    cout << "hello main" << '\n';
-    init();
+    p.init();
+
+    draw.draw(0,0,"hello world", DrawType::temp);
+    
+    p.cleanup();			/* End curses mode		  */
 }
 
 
