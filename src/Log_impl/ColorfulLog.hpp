@@ -11,9 +11,7 @@ class ColorfulLog : public ILog {
     explicit ColorfulLog(std::ostream&);
     ColorfulLog();
 
-    void log(std::string_view str){
-        paint(str, 96);
-    }
+    void log(std::string_view str);
     
     void print_8_colours();
 };

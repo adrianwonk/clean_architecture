@@ -8,6 +8,6 @@ enum class DrawType {
 };
 
 struct IDraw2D{
-    void draw(int, int, std::string_view, DrawType);
+    virtual void draw(int, int, std::string_view, DrawType) = 0;
     ~IDraw2D() = default;
 };

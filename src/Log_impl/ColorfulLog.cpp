@@ -4,6 +4,12 @@
 
 using namespace std;
 
+
+namespace {
+    const int style { 96 };
+}
+
+
 ColorfulLog::ColorfulLog(ostream& out):
     out(out)
 {}
@@ -11,6 +17,7 @@ ColorfulLog::ColorfulLog(ostream& out):
 ColorfulLog::ColorfulLog():
     out(clog)
 {}
+
 
 void ColorfulLog::print_8_colours(){
     out << "ColorfulLog color table:" << std::endl;
@@ -36,6 +43,11 @@ void ColorfulLog::paint(std::string_view str, int color_code){
             color_code
         << "m " <<
             str
-        << "\033[m" << '\n'
+        << "\033[m" 
     ;
+}
+
+void ColorfulLog::log(std::string_view str){
+    paint(str, style);
+    out << '\n';
 }

@@ -1,21 +1,18 @@
 #include <iostream>
 #include <ncurses.h>
+
 #include "INCursesResxManager.hpp"
-#include "NCursesHelloWorld.hpp"
+#include "NCursesResxManager.hpp"
+
+#include "IDraw2D.hpp"
+#include "ICompositor.hpp"
 
 #include "ColorfulLog.hpp"
 
-/* 
- * i would like to add a ncurses dependency.
- *  main -> ncurses
- * However, there are a lot of ncurses setup code.
- * Theses are VOLATILE CONCRETE components.
- * We want to avoid dependency to our ncurses setup, BECAUSE we change main to add changes, we change ncurses setup to configure ncurses.
- * Therefore, main -> INCurses. INCurses <- NCurses_v1.
-     * main is protected from changes to NCurses_v1.
-     * However, we still need to define implementation of INCurses.
-     * Create in stack, keep constructor simple, and pass it into interface reference instantly.
- * */ 
+#include <csignal>
+
+int main();
+void signal_handler(int);
 
 /*
  * Responsibilities:
@@ -35,20 +32,31 @@
 
 using namespace std;
 namespace{
-    ColorfulLog colorful {std::cout};
+    ColorfulLog colorful { std::clog }; // dependency 
     ILog& logger { colorful };
-    NCursesHelloWorld hi{ logger };
+    NCursesResxManager hi{ logger }; // dependency 
 
-    INCursesResxManager& p = hi;
-    IDraw2D& draw = hi;
+    INCursesResxManager& ncurses_resx_manager = hi;
+    IDraw2D& drawer = ;
+    ICompositor& compositor = ;
+    volatile std::sig_atomic_t running = 1;
+}
+
+void signal_handler(int signal){
+    if (signal == SIGINT)
+        running = 0;
 }
 
 int main(){
-    p.init();
+    std::signal(SIGINT, signal_handler);
+    ncurses_resx_manager.init();
 
-    draw.draw(0,0,"hello world", DrawType::temp);
-    
-    p.cleanup();			/* End curses mode		  */
+    compositor.clear();
+    drawer.draw(0,0,"hello world", DrawType::temp);
+    compositor.update();
+    while(running == 1);
+
+    ncurses_resx_manager.cleanup();			
 }
 
 

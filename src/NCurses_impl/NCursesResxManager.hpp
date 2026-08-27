@@ -3,12 +3,11 @@
 #include "ILog.hpp"
 #include "IDraw2D.hpp"
 
-class NCursesHelloWorld : public INCursesResxManager , public IDraw2D {
+class NCursesResxManager : public INCursesResxManager {
   private:
       ILog& logger;
   public:
     void init();
     void cleanup();
-    void draw(int,int,std::string_view);
-    explicit NCursesHelloWorld(ILog&);
+    explicit NCursesResxManager(ILog&);
 };

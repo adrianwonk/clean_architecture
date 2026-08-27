@@ -1,6 +1,7 @@
 #pragma once
 #include <string_view>
-struct ILog {
+#include <iostream>
+struct ILog: public std::ostream {
     virtual void log(std::string_view) = 0;
     virtual ~ILog() = default;
 };
