@@ -1,4 +1,5 @@
 #pragma once
+#include "ICompositor.hpp"
 #include <string_view>
 
 enum class DrawType {
@@ -8,6 +9,6 @@ enum class DrawType {
 };
 
 struct IDraw2D{
-    virtual void draw(int, int, std::string_view, DrawType) = 0;
+    virtual void draw(point3&, std::string_view, DrawType) = 0;
     ~IDraw2D() = default;
 };

@@ -1,8 +1,5 @@
 #include "NCursesResxManager.hpp"
-#include "vec3.hpp"
-
 #include <ncurses.h>
-#include <format>
 
 
 NCursesResxManager::NCursesResxManager(ILog& log_obj)

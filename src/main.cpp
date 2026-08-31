@@ -2,6 +2,7 @@
 #include <ncurses.h>
 
 #include "INCursesResxManager.hpp"
+#include "NCursesHelloWorld.hpp"
 #include "NCursesResxManager.hpp"
 
 #include "IDraw2D.hpp"
@@ -34,11 +35,10 @@ using namespace std;
 namespace{
     ColorfulLog colorful { std::clog }; // dependency 
     ILog& logger { colorful };
-    NCursesResxManager hi{ logger }; // dependency 
+    NCursesResxManager resx{ logger }; // dependency 
+    INCursesResxManager& iresx = resx;
+    NCursesHelloWorld hello_world{ logger,iresx };
 
-    INCursesResxManager& ncurses_resx_manager = hi;
-    IDraw2D& drawer = ;
-    ICompositor& compositor = ;
     volatile std::sig_atomic_t running = 1;
 }
 
@@ -49,14 +49,16 @@ void signal_handler(int signal){
 
 int main(){
     std::signal(SIGINT, signal_handler);
-    ncurses_resx_manager.init();
+    ICompositor& compositor = hello_world;
+    IDraw2D& drawer = hello_world;
+    vec3 pos {0,0,0};
 
-    compositor.clear();
-    drawer.draw(0,0,"hello world", DrawType::temp);
-    compositor.update();
-    while(running == 1);
+    while(running == 1){
+        compositor.clear();
+        drawer.draw(pos, "hello world", DrawType::temp);
+        compositor.update();
+    }
 
-    ncurses_resx_manager.cleanup();			
 }
 
 
