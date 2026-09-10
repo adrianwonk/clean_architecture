@@ -18,28 +18,22 @@ void signal_handler(int);
 /*
  * Responsibilities:
  *  - setting up ncurses
- *  - painting our first hello world:
-     *  - tracking where each paintable object is
-     *  - painting each paintable object
+ *      - manage colors, window, terminal resx.
+ *  - turning 0,0 relative coordinates into something ncurses understands.
+ *      - printing text after understanding it. 
  */
-
-/* I would also like to add a logger to each component. setup would be a component, live ncurses calls would be a component, game engine would be a component.
- * 1. Logger
- * 2. setup
- * 3. NCurses_caller
- * 4. Game_engine
- * 5. main compositor (this)
- * */
 
 using namespace std;
 namespace{
-    ColorfulLog colorful { std::clog }; // dependency 
-    ILog& logger { colorful };
-    NCursesResxManager resx{ logger }; // dependency 
-    INCursesResxManager& iresx = resx;
-    NCursesHelloWorld hello_world{ logger,iresx };
-
     volatile std::sig_atomic_t running = 1;
+
+    ColorfulLog colorful_ { std::clog }; // dependency 
+    ILog& logger { colorful_ };
+    NCursesResxManager ncur_resx_ { logger }; // dependency 
+    INCursesResxManager& ncur_resx = ncur_resx_;
+
+    // Hello world is the monolithic part of the codebase
+    NCursesHelloWorld hello_world{ logger,ncur_resx };
 }
 
 void signal_handler(int signal){

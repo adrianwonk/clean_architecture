@@ -1,27 +1,36 @@
-#ifndef VEC3_H
-#define VEC3_H
-
+#pragma once
 #include <cmath>
 #include <iostream>
+#include <concepts>
 
+template<typename T>
+concept IntOrDouble = std::same_as<T, int> || std::same_as<T, double>;
+
+template<typename T>
+concept Double = std::same_as<T, double>;
+
+template<typename T>
+concept Int = std::same_as<T, int>;
+
+template<IntOrDouble T>
 class vec3{
   public:
-    double e[3];
+    T e[3];
 
     // default and parameterised constructors for e[3]
     vec3() : e {0,0,0} {};
-    vec3(double x, double y, double z) : e {x,y,z} {};
+    vec3(T x, T y, T z) : e {x,y,z} {};
 
     // value getters
-    double x() const {
+    T x() const {
         return e[0];
     }
 
-    double y() const {
+    T y() const {
         return e[1];
     }
 
-    double z() const {
+    T z() const {
         return e[2];
     }
     vec3& operator=(const vec3& other) {
@@ -32,8 +41,8 @@ class vec3{
     }
 
     vec3 operator-() const { return {-e[0], -e[1], -e[2]}; } // we return value copies, as it "augments" state
-    double operator[](int i) const { return e[i]; }
-    double& operator[](int i) { return e[i]; }
+    T operator[](int i) const { return e[i]; }
+    T& operator[](int i) { return e[i]; }
 
     vec3& operator+=(const vec3& other) {
         e[0] += other.x();
@@ -60,64 +69,69 @@ class vec3{
     double length_squared() const{
         return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
     }
-    
-    // for discrete display
-    int clampx() {
-        return e[0];
-    }
-
-    int clampy() {
-        return e[1];
-    }
-
-    int clampz() {
-        return e[2];
-    }
 };
 
-using point3 = vec3;
+template<IntOrDouble T>
+using point3 = vec3<T>;
 
 // useful helper functions
-inline std::ostream& operator<<(std::ostream& out, const vec3& v){
+template<IntOrDouble T>
+inline std::ostream& operator<<(std::ostream& out, const point3<T>& v){
     return out << v[0] << ' ' << v[1] << ' ' << v[2] ;
 }
 
-inline vec3 operator+(const vec3& v1, const vec3& v2){
+template<IntOrDouble T>
+inline vec3<T> operator+(const vec3<T>& v1, const vec3<T>& v2){
     return {v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]};
 }
 
-inline vec3 operator-(const vec3& v1, const vec3& v2){
+template<IntOrDouble T>
+inline vec3<T> operator-(const vec3<T>& v1, const vec3<T>& v2){
     return {v1[0] - v2[0], v1[1] - v2[1], v1[2] - v2[2]};
 }
 
-inline vec3 operator*(const vec3& v1, const vec3& v2){
+template<IntOrDouble T>
+inline vec3<T> operator*(const vec3<T>& v1, const vec3<T>& v2){
     return {v1[0] * v2[0], v1[1] * v2[1], v1[2] * v2[2]};
 }
 
-inline vec3 operator*(double d, const vec3& v2){
+template<Double T>
+inline vec3<T> operator*(double d, const vec3<T>& v2){
     return {d * v2[0], d * v2[1], d * v2[2]};
 }
 
-inline vec3 operator*(const vec3& v2, double d){
+template<Int T>
+inline vec3<T> operator*(double d, const vec3<T>& v2){
+    return {
+        static_cast<T>(std::floor(d * v2[0])),
+        static_cast<T>(std::floor(d * v2[1])),
+        static_cast<T>(std::floor(d * v2[2]))
+    };
+}
+
+template<IntOrDouble T>
+inline vec3<T> operator*(const vec3<T>& v2, double d){
     return d * v2;
 }
 
-inline vec3 operator/(const vec3& v, double d){
+template<IntOrDouble T>
+inline vec3<T> operator/(const vec3<T>& v, double d){
     return (1/d) * v;
 }
 
-inline double dot(const vec3& v1, const vec3& v2){
+template<Double T>
+inline T dot(const vec3<T>& v1, const vec3<T>& v2){
     return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
 }
 
-inline vec3 cross(const vec3& u, const vec3& v) {
+template<Double T>
+inline vec3<T> cross(const vec3<T>& u, const vec3<T>& v) {
     return vec3(u.e[1] * v.e[2] - u.e[2] * v.e[1],
                 u.e[2] * v.e[0] - u.e[0] * v.e[2],
                 u.e[0] * v.e[1] - u.e[1] * v.e[0]);
 }
 
-inline vec3 unit_vector(const vec3& u) {
+template<Double T>
+inline vec3<T> unit_vector(const vec3<T>& u) {
     return u / u.length();
 }
-
-#endif

@@ -7,19 +7,18 @@
 
 namespace{
 
-inline vec3 get_scrn(){
+inline vec3<int> get_scrn(){
     int _width;
     int _height;
     getmaxyx(stdscr, _height, _width);
-    return {double(_width), double(_height), 0 };
+    return {_width, _height, 0 };
 }
 
-inline vec3 get_scrn_middle_clamped(){
-    vec3 middle_float = get_scrn() / 2;
-    return { double(middle_float.clampx()), double(middle_float.clampy()), 0. };
+inline vec3<int> get_scrn_middle(){
+    return get_scrn() / 2;
 }
 
-vec3 origin = get_scrn_middle_clamped();
+vec3<int> origin = get_scrn_middle();
 }
 
 class NCursesHelloWorld : public ICompositor, public IDraw2D{
@@ -46,17 +45,17 @@ class NCursesHelloWorld : public ICompositor, public IDraw2D{
         erase();
     }
 
-    void draw_centered(point3& pos, DrawnObject& obj){
+    void draw_centered(point3<int>& pos, DrawnObject& obj){
         auto draw_pos {origin + pos};
         int x = draw_pos.x();
         int y = draw_pos.y();
         mvprintw(x,y,"%s\0",obj.str.data()); 
     }
 
-    void draw(point3& pos, std::string_view str, DrawType type){
+    void draw(vec3<double>& pos, std::string_view str, DrawType type){
         if (type == DrawType::temp){
             DrawnObject res(str);
-            draw_centered(pos, res);
+            draw_centered(static_cast<vec3 <int>>(pos), res);
         }
     }
 };
