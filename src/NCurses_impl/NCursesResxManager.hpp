@@ -1,8 +1,8 @@
 #pragma once
-#include "INCursesResxManager.hpp"
+#include "IVisualResx.hpp"
 #include "ILog.hpp"
 
-class NCursesResxManager : public INCursesResxManager {
+class NCursesResxManager : public IVisualResx {
   private:
       ILog& logger;
   public:

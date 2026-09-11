@@ -20,6 +20,11 @@ class vec3{
     // default and parameterised constructors for e[3]
     vec3() : e {0,0,0} {};
     vec3(T x, T y, T z) : e {x,y,z} {};
+    vec3(vec3<double>& v) requires Int<T> : e {
+        static_cast<T>(std::floor(v.x())),
+        static_cast<T>(std::floor(v.y())),
+        static_cast<T>(std::floor(v.z()))
+    } {};
 
     // value getters
     T x() const {

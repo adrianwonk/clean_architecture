@@ -1,0 +1,3 @@
+change $HOME/clean_architecture... to the directory where this project is stored on your machine.
+
+add plantuml.jar to this folder.

@@ -1,0 +1,23 @@
+#!/bin/bash
+folder="$HOME/clean_architecture"
+
+(
+echo "$folder"; \
+hpp2plantuml \
+-i "$folder/src/*/*.hpp" \
+-i "$folder/src/*.hpp" \
+-o \
+"$folder/uml/output.puml";
+
+sed -i '1a!include style.puml' "$folder/uml/output.puml";
+sed -i 's/*--/-->/g' "$folder/uml/output.puml";
+sed -i '/^[[:blank:]]-/d' "$folder/uml/output.puml";
+
+java -jar \
+"$folder/uml/plantuml.jar" \
+"$folder/uml/output.puml";
+
+okular $folder/uml/output.png
+
+echo success
+) &

@@ -1,12 +1,13 @@
 #pragma once
 #include "ICompositor.hpp"
+#include "IVisualResx.hpp"
 #include "IDraw2D.hpp"
-#include "INCursesResxManager.hpp"
 #include "ILog.hpp"
+#include "vec3.hpp"
+#include <format>
 #include <ncurses.h>
 
 namespace{
-
 inline vec3<int> get_scrn(){
     int _width;
     int _height;
@@ -17,17 +18,15 @@ inline vec3<int> get_scrn(){
 inline vec3<int> get_scrn_middle(){
     return get_scrn() / 2;
 }
-
-vec3<int> origin = get_scrn_middle();
 }
 
 class NCursesHelloWorld : public ICompositor, public IDraw2D{
   private:
-    INCursesResxManager& resx_manager;
+    IVisualResx& resx_manager;
     ILog& logger;
   public:
     // constructor and destructor
-    NCursesHelloWorld(ILog& log, INCursesResxManager& resx):
+    NCursesHelloWorld(ILog& log, IVisualResx& resx):
         resx_manager(resx)
         ,logger(log)
     {
@@ -45,17 +44,24 @@ class NCursesHelloWorld : public ICompositor, public IDraw2D{
         erase();
     }
 
-    void draw_centered(point3<int>& pos, DrawnObject& obj){
-        auto draw_pos {origin + pos};
-        int x = draw_pos.x();
-        int y = draw_pos.y();
-        mvprintw(x,y,"%s\0",obj.str.data()); 
+    void draw_centered(point3<double>& posd, DrawnObject& obj){
+        vec3<int> pos { posd };
+        
+        // vec3<int> draw_pos { origin + pos };
+        vec3<int> origin = get_scrn_middle();
+        vec3<int> draw_pos {};
+        draw_pos = origin + pos;
+
+        mvprintw( draw_pos.y(), draw_pos.x(), "%s", obj.str.data() ); 
     }
 
     void draw(vec3<double>& pos, std::string_view str, DrawType type){
         if (type == DrawType::temp){
+            logger.log(std::format("drawing {}.", str));
             DrawnObject res(str);
-            draw_centered(static_cast<vec3 <int>>(pos), res);
+            logger.log(std::format("drawing {}.", res.str.data()));
+
+            draw_centered( pos, res );
         }
     }
 };

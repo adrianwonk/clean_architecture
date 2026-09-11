@@ -1,8 +1,8 @@
 #pragma once
 
-struct INCursesResxManager {
+struct IVisualResx {
     virtual void init() = 0;
     virtual void cleanup() = 0;
-    virtual ~INCursesResxManager() = default;
+    virtual ~IVisualResx() = default;
 };
 

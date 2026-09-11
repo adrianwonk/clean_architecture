@@ -1,8 +1,8 @@
 #pragma once
-template <typename out_t>
+template <typename T>
 struct IMetrics {
     virtual void tick() = 0;
     virtual void tock() = 0;
-    virtual out_t diff() = 0;
+    virtual T diff() = 0;
     ~IMetrics() = default;
 };

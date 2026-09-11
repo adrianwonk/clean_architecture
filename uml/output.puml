@@ -1,0 +1,150 @@
+@startuml
+!include style.puml
+
+
+
+
+
+/' Objects '/
+
+class ColorfulLog {
+	+ColorfulLog(std::ostream &)
+	+ColorfulLog()
+	+log(std::string_view str) : void
+	+print_8_colours() : void
+}
+
+
+class DrawnObject {
+	+DrawnObject(std::string_view s)
+	+str : std::string_view
+}
+
+
+class NCursesHelloWorld {
+	+NCursesHelloWorld(ILog& log, IVisualResx& resx)
+	+~NCursesHelloWorld()
+	+clear() : void
+	+draw(vec3<double>& pos, std::string_view str, DrawType type) : void
+	+draw_centered(point3<double>& posd, DrawnObject& obj) : void
+	+update() : void
+}
+
+
+class NCursesResxManager {
+	+NCursesResxManager(ILog &)
+	+cleanup() : void
+	+init() : void
+}
+
+
+class NewLineLog {
+	+log(std::string_view input) : void
+}
+
+
+class vec3 <template<IntOrDouble T>> {
+	+vec3()
+	+vec3(T x, T y, T z)
+	+vec3(vec3<double>& v)
+	+operator[](int i) : T {query}
+	+x() : T {query}
+	+y() : T {query}
+	+z() : T {query}
+	+operator[](int i) : T&
+	+e : T[]
+	+length() : double {query}
+	+length_squared() : double {query}
+	+operator-() : vec3 {query}
+	+operator*=(double scalar) : vec3&
+	+operator+=(const vec3& other) : vec3&
+	+operator/=(double scalar) : vec3&
+	+operator=(const vec3& other) : vec3&
+}
+
+
+enum DrawType {
+	bird
+	temp
+	ui
+}
+
+
+abstract class ICompositor {
+	+~ICompositor()
+	+{abstract} clear() : void
+	+{abstract} draw_centered(point3<double> &, DrawnObject &) : void
+	+{abstract} update() : void
+}
+
+
+abstract class IDraw2D {
+	+~IDraw2D()
+	+{abstract} draw(point3<double> &, std::string_view, DrawType) : void
+}
+
+
+abstract class ILog {
+	+~ILog()
+	+{abstract} log(std::string_view) : void
+}
+
+
+abstract class IMetrics <template<typename T>> {
+	+~IMetrics()
+	+{abstract} diff() : T
+	+{abstract} tick() : void
+	+{abstract} tock() : void
+}
+
+
+abstract class IVisualResx {
+	+~IVisualResx()
+	+{abstract} cleanup() : void
+	+{abstract} init() : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+ICompositor <|-- NCursesHelloWorld
+
+
+IDraw2D <|-- NCursesHelloWorld
+
+
+ILog <|-- ColorfulLog
+
+
+ILog <|-- NewLineLog
+
+
+IVisualResx <|-- NCursesResxManager
+
+
+
+
+
+/' Aggregation relationships '/
+
+NCursesHelloWorld --> ILog
+
+
+NCursesHelloWorld --> IVisualResx
+
+
+NCursesResxManager --> ILog
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

@@ -12,6 +12,6 @@ public:
 struct ICompositor {
     virtual void update() = 0;
     virtual void clear() = 0;
-    virtual void draw_centered( point3&, DrawnObject& ) = 0; // optimise potential
+    virtual void draw_centered( point3<double>&, DrawnObject& ) = 0; // optimise potential
     virtual ~ICompositor() = default;
 };
