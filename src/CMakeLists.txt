@@ -3,6 +3,7 @@ target_sources(${PROJECT_NAME}
         main.cpp
         Log_impl/ColorfulLog.cpp
         NCurses_impl/NCursesResxManager.cpp
+        NCurses_impl/NCursesDraw2D.cpp
         Game_impl/game_loop.cpp
 )
 

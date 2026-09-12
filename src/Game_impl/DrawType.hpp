@@ -1,6 +1,7 @@
 #pragma once
 enum class DrawType {
-    temp,
-    bird,
-    ui
+    player,
+    enemy,
+    ui,
+    emphasis
 };

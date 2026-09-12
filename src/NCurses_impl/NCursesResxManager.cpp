@@ -4,14 +4,14 @@
 
 NCursesResxManager::NCursesResxManager(ILog& log_obj)
     : logger(log_obj)
-{}
-
+{ logger.log("IMPL: NCursesResxManager created. (IVisualResx)");
+}
 
 void NCursesResxManager::init() {
     setlocale(LC_ALL, "C.UTF-8");
     if (initscr() == nullptr) {
         logger.log("failed to initialise ncurses");
-        return;
+        exit(1);
     }
 
     cbreak();
@@ -23,11 +23,11 @@ void NCursesResxManager::init() {
         start_color();
     }
 
-    logger.log("initialised NCursesHelloWorld");
+    logger.log("NCusesResxManager: initialised NCursesHelloWorld.");
 }
 
 void NCursesResxManager::cleanup(){
     endwin();
-    logger.log("cleaned up NCursesHelloWorld");
+    logger.log("NCuresesResxManager: cleaned up NCursesHelloWorld.");
 }
 

@@ -4,8 +4,8 @@
 #include "IDraw2D.hpp"
 #include "ILog.hpp"
 #include "vec3.hpp"
-#include <format>
 #include <ncurses.h>
+#include "NCursesDraw2D.hpp"
 
 namespace{
 inline vec3<int> get_scrn(){
@@ -24,18 +24,20 @@ class NCursesHelloWorld : public ICompositor, public IDraw2D{
   private:
     IVisualResx& resx_manager;
     ILog& logger;
+    NCursesDraw2D drawer;
   public:
     // constructor and destructor
     NCursesHelloWorld(ILog& log, IVisualResx& resx):
         resx_manager(resx)
         ,logger(log)
+        ,drawer(*this)
     {
+        logger.log("IMPL: NCursesHelloWorld created. (ICompositor, IDraw2D)");
         resx_manager.init();
     }
     ~NCursesHelloWorld(){
         resx_manager.cleanup();
     }
-    //
 
     void update(){
         refresh();
@@ -55,13 +57,7 @@ class NCursesHelloWorld : public ICompositor, public IDraw2D{
         mvprintw( draw_pos.y(), draw_pos.x(), "%s", obj.str.data() ); 
     }
 
-    void draw(vec3<double>& pos, std::string_view str, DrawType type){
-        if (type == DrawType::temp){
-            logger.log(std::format("drawing {}.", str));
-            DrawnObject res(str);
-            logger.log(std::format("drawing {}.", res.str.data()));
-
-            draw_centered( pos, res );
-        }
+    inline void draw(vec3<double>& pos, std::string_view str, DrawType type){
+        drawer.draw(pos, str, type);
     }
 };

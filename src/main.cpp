@@ -15,6 +15,7 @@ namespace{
     ColorfulLog colorful_ { std::clog }; // dependency 
     NCursesResxManager ncur_resx_ { logger }; // dependency 
     NCursesHelloWorld hello_world{ logger, ncur_resx }; // monolithic dependency
+    Game game {};
 
     ILog& logger { colorful_ };
     IVisualResx& ncur_resx { ncur_resx_ };
@@ -32,7 +33,7 @@ void signal_handler(int signal){
 int main(){
     std::signal(SIGINT, signal_handler);
     while(running == 1){
-        game(compositor, drawer);
+        game.loop(compositor, drawer);
     }
 }
 

@@ -16,7 +16,9 @@ ColorfulLog::ColorfulLog(ostream& out):
 
 ColorfulLog::ColorfulLog():
     out(clog)
-{}
+{
+    log("IMPL: ColorfulLog created. (ILog)");
+}
 
 
 void ColorfulLog::print_8_colours(){

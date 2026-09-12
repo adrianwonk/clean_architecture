@@ -1,5 +1,9 @@
 #pragma once
 #include "ICompositor.hpp"
 #include "IDraw2D.hpp"
-void game(ICompositor& compositor
-        , IDraw2D& drawer);
+class Game {
+  public:
+    Game(){};
+    void loop(ICompositor& compositor
+            , IDraw2D& drawer);
+};
