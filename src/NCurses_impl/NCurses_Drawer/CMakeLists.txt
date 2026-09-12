@@ -1,13 +1,8 @@
-add_subdirectory(NCurses_impl)
-add_subdirectory(Log_impl)
-add_subdirectory(Game_impl)
-add_subdirectory(Quick_utils)
-
 target_sources(${PROJECT_NAME}
     PRIVATE
-        main.cpp
+        NCursesDraw2D.cpp        
+        
 )
-
 target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}

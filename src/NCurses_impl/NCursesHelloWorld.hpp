@@ -3,21 +3,12 @@
 #include "IVisualResx.hpp"
 #include "IDraw2D.hpp"
 #include "ILog.hpp"
+#include "NCursesCompositor.hpp"
 #include "vec3.hpp"
 #include <ncurses.h>
 #include "NCursesDraw2D.hpp"
 
 namespace{
-inline vec3<int> get_scrn(){
-    int _width;
-    int _height;
-    getmaxyx(stdscr, _height, _width);
-    return {_width, _height, 0 };
-}
-
-inline vec3<int> get_scrn_middle(){
-    return get_scrn() / 2;
-}
 }
 
 class NCursesHelloWorld : public ICompositor, public IDraw2D{
@@ -25,36 +16,34 @@ class NCursesHelloWorld : public ICompositor, public IDraw2D{
     IVisualResx& resx_manager;
     ILog& logger;
     NCursesDraw2D drawer;
+    NCursesCompositor compositor;
   public:
     // constructor and destructor
     NCursesHelloWorld(ILog& log, IVisualResx& resx):
         resx_manager(resx)
         ,logger(log)
-        ,drawer(*this)
+        ,drawer(logger,*this)
+        ,compositor(logger)
+
     {
         logger.log("IMPL: NCursesHelloWorld created. (ICompositor, IDraw2D)");
         resx_manager.init();
     }
+
     ~NCursesHelloWorld(){
         resx_manager.cleanup();
     }
 
-    void update(){
-        refresh();
-    }
-    void clear(){
-        erase();
+    inline void update(){
+        compositor.update();
     }
 
-    void draw_centered(point3<double>& posd, DrawnObject& obj){
-        vec3<int> pos { posd };
-        
-        // vec3<int> draw_pos { origin + pos };
-        vec3<int> origin = get_scrn_middle();
-        vec3<int> draw_pos {};
-        draw_pos = origin + pos;
+    inline void clear(){
+        compositor.clear();
+    }
 
-        mvprintw( draw_pos.y(), draw_pos.x(), "%s", obj.str.data() ); 
+    inline void draw_centered(point3<double>& posd, DrawnObject& obj){
+        compositor.draw_centered(posd,obj);
     }
 
     inline void draw(vec3<double>& pos, std::string_view str, DrawType type){
