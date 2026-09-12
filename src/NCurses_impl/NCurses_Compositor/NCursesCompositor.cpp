@@ -14,13 +14,6 @@ inline vec3<int> get_scrn_middle(){
 }
 }
 
-void NCursesCompositor::update(){
-    refresh();
-
-}
-void NCursesCompositor::clear(){
-    erase();
-}
 void NCursesCompositor::draw_centered( point3<double>& posd
         , DrawnObject& obj ){
         vec3<int> pos { posd };
@@ -30,3 +23,8 @@ void NCursesCompositor::draw_centered( point3<double>& posd
         draw_pos = origin + pos;
         mvprintw( draw_pos.y(), draw_pos.x(), "%s", obj.str.data() ); 
 }
+
+
+// ncurses shit
+void NCursesCompositor::update(){ refresh(); }
+void NCursesCompositor::clear(){ erase(); }
